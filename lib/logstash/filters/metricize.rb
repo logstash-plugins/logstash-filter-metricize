@@ -2,16 +2,16 @@
 require "logstash/filters/base"
 require "logstash/namespace"
 
-# The metricize filter is for duplicating events.
-# A clone will be made for each type in the clone list.
-# The original event is left unchanged.
-# If this filter is successful, remove arbitrary fields from this event.
-# Fields names can be dynamic and include parts of the event using the %{field}
+# The metricize filter takes complex events containing a number of metrics
+# and splits these up into multiple events, each holding a single metric.
+#
 # Example:
+#
+#     Assume the following filter configuration:
 #
 #     filter {
 #       %PLUGIN% {
-#         metrics => [ "metric_a", "metric_b" ]
+#         metrics => [ "metric1", "metric2" ]
 #       }
 #     }
 #
@@ -19,16 +19,16 @@ require "logstash/namespace"
 # 
 #     {
 #          type => "type A"
-#          metric_a => 4
-#          metric_b => 5
+#          metric1 => "value1"
+#          metric2 => "value2"
 #     }
 #
 #     This will result in the following 2 events being generated in addition to the original event:
 #
 #     {                               {
 #         type => "type A"                type => "type A"
-#         metric => "metric_a"            metric => "metric_b"
-#         value => 4                      value => 5
+#         metric => "metric1"             metric => "metric2"
+#         value => "value1"               value => "value2"
 #     }                               }
 #     
 
