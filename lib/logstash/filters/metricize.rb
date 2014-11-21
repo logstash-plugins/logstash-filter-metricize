@@ -41,14 +41,14 @@ class LogStash::Filters::Metricize < LogStash::Filters::Base
   # All fields in this list will be removed from generated events.
   config :metrics, :validate => :array, :required => true
 
-  # Parameter determining whether the original event should be kept or not.
-  config :keep_original_event, :validate => :array, :default => true
-
   # Name of the field the metric name will be written to.
-  config :metric_field_name, :validate => :string, :default => 'metric'
+  config :metric_field_name, :validate => :string, :default => "metric"
 
   # Name of the field the metric value will be written to.
-  config :value_field_name, :validate => :string, :default => 'value'
+  config :value_field_name, :validate => :string, :default => "value"
+
+  # Flag indicating whether the original event should be dropped or not.
+  config :drop_original_event, :validate => :boolean, :default => false
 
   public
   def register
@@ -64,16 +64,20 @@ class LogStash::Filters::Metricize < LogStash::Filters::Base
     end  
 
     @metrics.each do |metric|
-      clone = base_event.clone
-      clone[:metric_field_name] = metric
-      clone[:value_field_name] = event[metric]
-      @logger.debug("Created metricized event ", :clone => clone, :event => event)
-      yield clone
+      if event[metric]
+        clone = base_event.clone
+        clone[@metric_field_name] = metric
+        clone[@value_field_name] = event[metric]
+        @logger.debug("Created metricized event ", :clone => clone, :event => event)
+        yield clone
+      end
     end
 
-    if !@keep_original_event
+    if @drop_original_event
       event.cancel()
     end
+
+    base_event.cancel()
   end
 
 end # class LogStash::Filters::Metricize

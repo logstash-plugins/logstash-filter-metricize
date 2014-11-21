@@ -32,11 +32,11 @@ describe LogStash::Filters::Metricize do
   describe "Complex use" do
     config <<-CONFIG
       filter {
-        clone {
-          keep_original_event => false
+        metricize {
+          drop_original_event => true
           metric_field_name => "metric"
           value_field_name => "value"
-          metrics => ["metric1", "metric2"]
+          metrics => ["metric0", "metric1","metric2"]
         }
       }
     CONFIG
@@ -52,7 +52,7 @@ describe LogStash::Filters::Metricize do
       reject { subject[0] }.include?("metric1")
       reject { subject[0] }.include?("metric2")
 
-      # Verify first metrics event
+      # Verify second metrics event
       insist { subject[1]["message"] } == "hello world"
       insist { subject[1]["metric3"] } == "value3"
       insist { subject[1]["metric"] } == "value2"
