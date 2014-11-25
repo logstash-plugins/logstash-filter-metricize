@@ -3,7 +3,6 @@ require "logstash/devutils/rspec/spec_helper"
 require "logstash/filters/metricize"
 
 describe LogStash::Filters::Metricize do
-  extend LogStash::RSpec
 
   describe "all defaults" do
     config <<-CONFIG
