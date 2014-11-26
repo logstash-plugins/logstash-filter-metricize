@@ -1,10 +1,10 @@
-require "spec_helper"
+# encoding: utf-8
+require "logstash/devutils/rspec/spec_helper"
 require "logstash/filters/metricize"
 
 describe LogStash::Filters::Metricize do
 
   describe "all defaults" do
-    type "original"
     config <<-CONFIG
       filter {
         metricize {
@@ -21,7 +21,8 @@ describe LogStash::Filters::Metricize do
           insist { s["metric1"] } == "value1"
           reject { s }.include?("metric")
         else
-          insist { s["metric"]} == "value1"
+          insist { s["metric"]} == "metric1"
+          insist { s["value"]} == "value1"
           reject { s }.include?("metric1")
         end
         insist { s["message"] } == "hello world"
@@ -34,7 +35,7 @@ describe LogStash::Filters::Metricize do
       filter {
         metricize {
           drop_original_event => true
-          metric_field_name => "metric"
+          metric_field_name => "key"
           value_field_name => "value"
           metrics => ["metric0", "metric1","metric2"]
         }
@@ -48,17 +49,18 @@ describe LogStash::Filters::Metricize do
       # Verify first metrics event
       insist { subject[0]["message"] } == "hello world"
       insist { subject[0]["metric3"] } == "value3"
-      insist { subject[0]["metric"] } == "value1"
+      insist { subject[0]["key"] } == "metric1"
+      insist { subject[0]["value"] } == "value1"
       reject { subject[0] }.include?("metric1")
       reject { subject[0] }.include?("metric2")
 
       # Verify second metrics event
       insist { subject[1]["message"] } == "hello world"
       insist { subject[1]["metric3"] } == "value3"
-      insist { subject[1]["metric"] } == "value2"
+      insist { subject[1]["key"] } == "metric2"
+      insist { subject[1]["value"] } == "value2"
       reject { subject[1] }.include?("metric1")
       reject { subject[1] }.include?("metric2")
-
     end
   end
 
