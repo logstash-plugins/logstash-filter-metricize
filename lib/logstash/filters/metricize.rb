@@ -35,7 +35,6 @@ require "logstash/namespace"
 class LogStash::Filters::Metricize < LogStash::Filters::Base
 
   config_name "metricize"
-  milestone 1
 
   # A new matrics event will be created for each metric field in this list.
   # All fields in this list will be removed from generated events.
