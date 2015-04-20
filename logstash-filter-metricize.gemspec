@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.licenses        = ['Apache License (2.0)']
   s.summary         = "The metricize filter is for transforming events with multiple metrics into multiple event each with a single metric."
   s.description     = "Metricize will take an event together with a list of metric fields and split this into multiple events, each holding a single metric."
-  s.authors         = ["Elasticsearch"]
-  s.email           = 'christian.dahlqvist@elasticsearch.com'
+  s.authors         = ["Elastic"]
+  s.email           = 'christian.dahlqvist@elastic.co'
   s.homepage        = "http://logstash.net/"
   s.require_paths = ["lib"]
 
