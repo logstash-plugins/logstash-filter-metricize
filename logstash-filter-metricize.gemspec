@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
 
   s.name            = 'logstash-filter-metricize'
-  s.version         = '0.1.4'
+  s.version         = '0.1.5'
   s.licenses        = ['Apache License (2.0)']
   s.summary         = "The metricize filter is for transforming events with multiple metrics into multiple event each with a single metric."
   s.description     = "Metricize will take an event together with a list of metric fields and split this into multiple events, each holding a single metric."
@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "logstash-core", '>= 1.4.0', '< 2.0.0'
 
   s.add_development_dependency 'logstash-devutils'
-  s.add_development_dependency "rspec", "~> 2.14.0" # MIT License
 
 end
 
