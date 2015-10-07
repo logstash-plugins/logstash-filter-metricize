@@ -56,7 +56,7 @@ class LogStash::Filters::Metricize < LogStash::Filters::Base
 
   public
   def filter(event)
-    return unless filter?(event)
+    
     base_event = event.clone
     @metrics.each do |field|
       base_event.remove(field)
