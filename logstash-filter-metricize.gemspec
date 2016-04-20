@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.version         = '2.0.4'
   s.licenses        = ['Apache License (2.0)']
   s.summary         = "The metricize filter is for transforming events with multiple metrics into multiple event each with a single metric."
-  s.description     = "Metricize will take an event together with a list of metric fields and split this into multiple events, each holding a single metric."
+  s.description     = "This gem is a Logstash plugin required to be installed on top of the Logstash core pipeline using $LS_HOME/bin/logstash-plugin install gemname. This gem is not a stand-alone program"
   s.authors         = ["Elastic"]
   s.email           = 'christian.dahlqvist@elastic.co'
   s.homepage        = "http://logstash.net/"
