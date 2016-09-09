@@ -65,8 +65,8 @@ class LogStash::Filters::Metricize < LogStash::Filters::Base
     @metrics.each do |metric|
       if event[metric]
         clone = base_event.clone
-        clone[@metric_field_name] = metric
-        clone[@value_field_name] = event[metric]
+        clone.set(@metric_field_name, metric)
+        clone.set(@value_field_name, event.get(metric))
         @logger.debug("Created metricized event ", :clone => clone, :event => event)
         yield clone
       end
