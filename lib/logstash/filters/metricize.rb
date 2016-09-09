@@ -16,7 +16,7 @@ require "logstash/namespace"
 #     }
 #
 #     Assuming the following event is passed in:
-# 
+#
 #     {
 #          type => "type A"
 #          metric1 => "value1"
@@ -30,8 +30,7 @@ require "logstash/namespace"
 #         metric => "metric1"             metric => "metric2"
 #         value => "value1"               value => "value2"
 #     }                               }
-#     
-
+#
 class LogStash::Filters::Metricize < LogStash::Filters::Base
 
   config_name "metricize"
@@ -56,18 +55,19 @@ class LogStash::Filters::Metricize < LogStash::Filters::Base
 
   public
   def filter(event)
-    
+
     base_event = event.clone
     @metrics.each do |field|
       base_event.remove(field)
-    end  
+    end
 
-    @metrics.each do |metric|
-      if event[metric]
+    @metrics.each do |metric_key|
+      metric_value = event.get(metric_key)
+      if metric_value
         clone = base_event.clone
-        clone[@metric_field_name] = metric
-        clone[@value_field_name] = event[metric]
-        @logger.debug("Created metricized event ", :clone => clone, :event => event)
+        clone.set(@metric_field_name, metric_key)
+        clone.set(@value_field_name, metric_value)
+        @logger.debug? && @logger.debug("Created metricized event ", :clone => clone, :event => event)
         yield clone
       end
     end
