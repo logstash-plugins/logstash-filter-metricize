@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
 
   s.name            = 'logstash-filter-metricize'
-  s.version         = '3.0.3'
+  s.version         = ::File.read('version').split("\n").first
   s.platform        = 'java'
   s.licenses        = ['Apache-2.0']
   s.summary         = "Takes complex events containing a number of metrics and splits these up into multiple events, each holding a single metric"
